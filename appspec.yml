@@ -1,0 +1,33 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/api
+    except:
+    owner: ec2-user
+    group: ec2-user
+permissions:
+  - object: /home/ec2-user/api
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+    type:
+      - directory
+  - object: /home/ec2-user/api
+    owner: ec2-user
+    group: ec2-user
+    type:
+      - file
+hooks:
+ BeforeInstall:
+   - location: scripts/before.sh
+     timeout: 60
+     runas: ec2-user
+ AfterInstall:
+   - location: scripts/after.sh
+     timeout: 180
+     runas: ec2-user
+ ValidateService:
+   - location: scripts/validate.sh
+     timeout: 120
+     runas: ec2-user

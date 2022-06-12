@@ -1,0 +1,23 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "development environment hostname :  apidev.codemonk.ai",
+    "version": "1.0.0",
+    "title": "CodeMonk API DOCS"
+  },
+  "basePath": "",
+  "securityDefinitions": {
+    "bearerAuth": {
+      "name": "Authorization",
+      "type": "apiKey",
+      "in": "header",
+      "bearerFormat": "JWT"
+    }
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {},
+  "definitions": {}
+}

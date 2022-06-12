@@ -1,0 +1,7 @@
+# robotstxt.org
+
+User-agent: *
+Allow: /c/*
+Disallow: /
+
+

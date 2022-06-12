@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CodeMonk</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        @page {
+            margin-top: 30px;
+        }
+
+        @page: first {
+            margin-top: 0px;
+        }
+
+        @font-face {
+            font-family: 'futura-bold';
+            src: url('##BASE_URL/fonts/Futura-Bold.eot');
+            src: url('##BASE_URL/fonts/Futura-Bold.eot') format('embedded-opentype'),
+                url('##BASE_URL/fonts/Futura-Bold.woff2') format('woff2'),
+                url('##BASE_URL/fonts/Futura-Bold.woff') format('woff'),
+                url('##BASE_URL/fonts/Futura-Bold.ttf') format('truetype'),
+                url('##BASE_URL/fonts/Futura-Bold.svg') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'GT-Walsheim-Pro-Regular';
+            src: url('##BASE_URL/fonts/GT-Walsheim-Pro-Regular.eot');
+            src: url('##BASE_URL/fonts/GT-Walsheim-Pro-Regular.eot') format('embedded-opentype'),
+                url('##BASE_URL/fonts/GT-Walsheim-Pro-Regular.woff2') format('woff2'),
+                url('##BASE_URL/fonts/GT-Walsheim-Pro-Regular.woff') format('woff'),
+                url('##BASE_URL/fonts/GT-Walsheim-Pro-Regular.ttf') format('truetype'),
+            url('##BASE_URL/fonts/GT-Walsheim-Pro-Regular.svg') format('svg');
+            font-weight: 400;
+            font-style: normal;
+            font-stretch: normal;
+            unicode-range: U+0020-00FE;
+        }
+
+        body {
+            width: 100%;
+            position: relative;
+            background: #FFFFFF;
+            font-size: 16px;
+            margin: 0 auto;
+            padding: 0;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #04004E;
+        }
+
+        ol,
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        a {
+            color: #4C00FF;
+            text-decoration: underline;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .f-left {
+            float: left;
+        }
+
+        .f-right {
+            float: right;
+        }
+
+        .d-inline-block {
+            display: inline-block;
+        }
+
+        .inner-container{
+            padding: 40px 25px;
+        }
+
+        .container-left {
+            width: 65%;
+        }
+
+        .container-right {
+            width: 35%;
+            display: inline-block;
+            background-color: rgba(24, 51, 204, 0.03);
+        }
+
+        .container-right .section {
+            margin: 20px 0;
+            padding-bottom: 20px;
+        }
+
+        .container-right .section p {
+            margin-bottom: 0px !important;
+        }
+
+        .topBorder img {
+            width: 100%;
+            height: 5px;
+            display: block;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 28px;
+            letter-spacing: 0.25px;
+            color: #2A2536;
+            margin: 0 0 15px;
+            font-family: 'GT-Walsheim-Pro-Regular';
+
+        }
+
+        p.with-opacity,
+        span.with-opacity {
+            color: rgba(42, 37, 54, 0.7);
+        }
+
+        .display-flex {
+            display: flex;
+            display: -webkit-flex;
+        }
+
+        p.title {
+            font-weight: bold;
+            font-family: 'GT-Walsheim-Pro-Regular';
+        }
+
+        .mb-5 {
+            margin-bottom: 5px !important;
+        }
+
+        .mb-0 {
+            margin-bottom: 0 !important;
+        }
+
+        .font8 {
+            font-size: 8px !important;
+        }
+
+        figure.avtar {
+            display: block;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 60px;
+            height: 60px;
+            margin: 0;
+            margin-right: 16px;
+        }
+
+        figure>img {
+            height: 100%;
+        }
+
+        .profile-info {
+            display: inline-block;
+        }
+
+        .profile-info h2 {
+            color: #04004E;
+            font-size: 24px;
+            line-height: 27px;
+            letter-spacing: 0.31px;
+            font-weight: 500;
+            margin: 0px 4px;
+            margin-bottom: 5px;
+            font-family: 'GT-Walsheim-Pro-Regular';
+            text-decoration-line: underline;
+        }
+
+        .profile-info h2 img {
+            margin: 0 4px;
+            position: relative;
+            top: 3px;
+        }
+
+        .profile-info p {
+            margin: 0;
+            margin-bottom: 10px;
+            font-size: 12px;
+            line-height: 90%;
+            letter-spacing: -0.02em;
+            color: rgba(4, 0, 78, 0.5);
+            font-family: 'GT-Walsheim-Pro-Regular';
+        }
+
+        .profile-info p.role {
+            margin: 0;
+            margin-bottom: 10px;
+            font-size: 12px;
+            line-height: 90%;
+            letter-spacing: -0.02em;
+            color: #04004E;
+            font-family: 'GT-Walsheim-Pro-Regular';
+        }
+
+        .social-media {
+            margin-bottom: 20px;
+        }
+        
+        .social-media a {
+            opacity: 0.5;
+            margin-right: 10px;
+            height: 12px;
+        }
+
+        .earth-link {
+            position: relative;
+            top: 1px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-employement .section-title {
+            margin-bottom: 0px;
+        }
+
+        .section-employement .section-title h3 {
+            margin-top: 20px;
+            margin-bottom: 0px;
+        }
+
+        .section-border {
+            border-bottom: 2px solid #F3F1F9;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            border-bottom: 2px dashed #F3F1F9;
+            margin-bottom: 15px;
+        }
+
+        .section-title.no-border {
+            border: none;
+        }
+
+        .section-title h3 {
+            font-size: 14px;
+            line-height: 16px;
+            color: #04004E;
+            margin: 0 0 15px;
+            font-family: 'GT-Walsheim-Pro-Regular';
+        }
+
+        .employment-details-info {
+            padding: 15px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .rate-block {
+            margin-bottom: 15px;
+        }
+
+        .rate-block-label {
+            font-family: 'GT-Walsheim-Pro-Regular';
+            font-size: 10px;
+            line-height: 90%;
+            letter-spacing: -0.02em;
+            color: #04004E;
+            margin: 0;
+            margin-bottom: 10px;
+        }
+
+        .profile-rate {
+            font-size: 12px;
+            line-height: 90%;
+            letter-spacing: -0.02em;
+            color: #1833CC;
+            font-family: 'GT-Walsheim-Pro-Regular';
+            margin: 0px 2px;
+        }
+
+        .profile-rate-type {
+            font-size: 10px;
+            line-height: 90%;
+        }
+
+        .project-image {
+            width: 80px;
+            height: 56px;
+            border-radius: 5px;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+
+        img {
+            max-height: 100%;
+        }
+
+        .image30 {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            margin-right: 15px;
+            overflow: hidden;
+        }
+
+        .sub-section {
+            padding: 15px 0;
+            border-bottom: 2px dashed #F3F1F9;
+        }
+
+        .sub-section:last-child {
+            border-bottom: none;
+        }
+
+        .sub-section p {
+            font-size: 10px;
+            line-height: 90%;
+            letter-spacing: -0.02em;
+            color: rgba(4, 0, 78, 0.8);
+            margin-right: 10px;
+            margin-bottom: 0;
+        }
+
+        .sub-section .role {
+            font-size: 10px;
+            line-height: 90%;
+            letter-spacing: -0.02em;
+            color: rgba(4, 0, 78, 0.5);
+        }
+
+        .sub-section h3 {
+            font-size: 12px;
+            line-height: 90%;
+            letter-spacing: -0.02em;
+            color: rgba(4, 0, 78, 0.8);
+        }
+
+        .project-info img {
+            margin-right: 5px;
+        }
+
+        .sub-section .description {
+            font-size: 10px;
+            line-height: 11px;
+            color: rgba(4, 0, 78, 0.5);
+            margin-top: 12px;
+            margin-bottom: 15px;
+        }
+
+        .project-skills {
+            margin: 0 auto;
+        }
+
+        .project-skills p {
+            color: rgba(4, 0, 78, 0.5);
+        }
+
+        .project-skill-label {
+            margin-bottom: 10px !important;
+            padding: 0;
+            color: rgba(4, 0, 78, 0.8) !important;
+        }
+
+        .sub-section-info h3 {
+            margin: 5px 0;
+        }
+
+        .progress-bar-list li p {
+            font-size: 10px;
+            line-height: 90%;
+            color: rgba(4, 0, 78, 0.8);
+            letter-spacing: -0.02em;
+            padding: 5px 0;
+        }
+
+        .progress-bar-list li p img.skill-status {
+            position: relative;
+            margin-right: 4px;
+            top: 2px;
+            margin-right: 4px;
+        }
+
+        .team-work li img {
+            position: relative;
+            bottom: 1px;
+            margin-right: 4px;
+        }
+
+        .progress {
+            background: rgba(24, 51, 204, 0.2);
+            width: 45px;
+            height: 3px;
+            display: flex;
+            border-radius: 2px;
+            position: relative;
+            top: 3px;
+            overflow: hidden;
+        }
+
+        .prefix-img-item .progress {
+            top: 6px;
+        }
+
+        .progress span {
+            position: absolute;
+            width: 1%;
+            height: 3px;
+            background: rgba(24, 51, 204, 1);
+            display: flex;
+            border-radius: 2px;
+        }
+
+        .hidden{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container-left f-left">
+            <div class="inner-container">
+                <div class="section section-border">
+                    <figure class="avtar f-left">
+                        <img src="##PROFILEPICTURE" />
+                    </figure>
+                    <div class="profile-info">
+                        <h2>##FIRSTNAME <img src="##BASE_URL/images/star-tick.png" class="##VERIFIEDPROFILE" /></h2>
+                        <div>
+                            <p>
+                                ##CITY, ##COUNTRY (##TIMEZONE)
+                            </p>
+                            <p class="role">
+                                ##YEARSOFEXPERIENCE - ##PRIMARYROLE
+                            </p>
+                            <div class="social-media">
+                                <a href="##LINKEDINURL"><img src="##BASE_URL/images/linkedin.png" /></a>
+                                <a href="##DRIBBBLEURL"><img src="##BASE_URL/images/dribble.png" /></a>
+<!--                                <a href="##FACEBOOK_LINK"><img src="##BASE_URL/images/facebook.png" /></a>-->
+                                <a class="earth-link" href="##PORTFOLIOURL"><img src="##BASE_URL/images/earth.png" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-employement ##SHOWEMPLOYMENT">
+                    <div class="section-title no-border">
+                        <h3>Employment type</h3>
+                    </div>
+                    <div class="employment-details-info">
+                        <div class="rate-block ##IS_PERMANENT_EMPLOYEE">
+                            <p class="rate-block-label">Permanent Employee</p>
+                            <p class="profile-rate">
+                                <span>##2CURRENCYANNUALRATE##2ANNUALRATE / </span>
+                                <span class="profile-rate-type">Annual rate ##PLATFORMFEES</span>
+                            </p>
+                        </div>
+                        <div class="rate-block ##IS_FREELANCER">
+                            <p class="rate-block-label">Freelancer</p>
+                            <p class="profile-rate">
+                                <span>##CURRENCY##RATEPERHOUR / </span>
+                                <span class="profile-rate-type">Hourly rate ##PLATFORMFEES</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="section">
+                        <div class="section-title">
+                            <h3>Key Projects</h3>
+                        </div>
+                        ##PROJECTDETAILS
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="section">
+                        <div class="section-title">
+                            <h3>Work experience</h3>
+                        </div>
+                       ##WORKEXPERIENCE
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="section">
+                        <div class="section-title">
+                            <h3>Education</h3>
+                        </div>
+                       ##EDUCATIONDETAILS
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="section ##HIDECERTIFICATE">
+                        <div class="section-title">
+                            <h3>Certifications</h3>
+                        </div>
+                        ##CERTIFICATEDETAILS
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-right">
+            <div class="inner-container">
+                <div class="section section-border hidden">
+                    <div class="section-title no-border">
+                        <h3>Ratings</h3>
+                    </div>
+                    <div>
+                        <ul class="progress-bar-list">
+                            ##SKILLS
+                        </ul>
+                    </div>
+                </div>
+                <div class="section section-border">
+                    <div class="section-title no-border">
+                        <h3>Top skills</h3>
+                    </div>
+                    <div>
+                        <ul class="progress-bar-list prefix-img-item">
+                            ##TOPSKILLS
+                        </ul>
+                    </div>
+                </div>
+                <div class="section section-border hidden">
+                    <div class="section-title no-border">
+                        <h3>Soft skills</h3>
+                    </div>
+                    <div>
+                        <ul class="progress-bar-list">
+                            <li>
+                                <p>##SOFT_SKILL_NAME <span class="f-right">
+                                    <span class="progress"><span style="width:##PROGRESS_VALUE%"></span></span>
+                                </span></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="section section-border sub-section ##HASOTHERSKILLS">
+                    <div class="section-title no-border">
+                        <h3>Also Knows</h3>
+                    </div>
+                    <p>##OTHERSKILLS</p>
+                </div>
+                <div class="section section-border sub-section hidden">
+                    <div class="section-title no-border">
+                        <h3>Team working</h3>
+                    </div>
+                    <p>
+                        <img src="##BASE_URL/images/donut-chart.png" />
+                    </p>
+                    <div>
+                        <ul class="progress-bar-list team-work">
+                            <li>
+                                <p><img src="##BASE_URL/images/bullet.png"/>##TEAM_WORKING_1 (##VALUE)</p>
+                            </li>
+                            <li>
+                                <p><img src="##BASE_URL/images/bullet-1.png"/>##TEAM_WORKING_2 (##VALUE)</p>
+                            </li>
+                            <li>
+                                <p><img src="##BASE_URL/images/bullet-2.png"/>##TEAM_WORKING_3 (##VALUE)</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="section section-border sub-section hidden">
+                    <div class="section-title no-border">
+                        <h3>DISC profile</h3>
+                    </div>
+                    <div>
+                        <ul class="progress-bar-list">
+                            <li>
+                                <p>##SOFT_SKILL_NAME <span class="f-right">
+                                    <span class="progress"><span style="width:##PROGRESS_VALUE%"></span></span>
+                                </span></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="section section-border sub-section">
+                    <div class="section-title no-border">
+                        <h3>Languages</h3>
+                    </div>
+                    <p>##LANGUAGE</p>
+                </div>
+                <div class="section section-border sub-section">
+                    <div class="section-title no-border">
+                        <h3>Values</h3>
+                    </div>
+                    <p>##COMPANYCULTURES</p>
+                </div>
+                <div class="section section-border sub-section">
+                    <div class="section-title no-border">
+                        <h3>Industries</h3>
+                    </div>
+                    <p>##INDUSTRIES</p>
+                </div>
+                <div class="section section-border sub-section">
+                    <div class="section-title no-border">
+                        <h3>Company Size</h3>
+                    </div>
+                    <p>##COMPANYTYPE</p>
+                </div>
+                <div class="section section-border sub-section">
+                    <div class="section-title no-border">
+                        <h3>Team Size</h3>
+                    </div>
+                    <p>##TEAMPREFERENCE</p>
+                </div>
+                <div class="section section-border sub-section">
+                    <div class="section-title no-border">
+                        <h3>Assignment</h3>
+                    </div>
+                    <p>##ASSIGNMENTS</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

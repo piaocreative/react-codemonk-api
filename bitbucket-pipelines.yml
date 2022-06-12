@@ -1,0 +1,294 @@
+definitions:
+  services:
+    mongo:
+      image: mongo
+  steps:
+  - step: &initialize-pipeline
+      name: "Initialize Pipeline"
+      script:
+        - echo "Successfully initailized pipeline!!!"
+  - step: &build-and-package
+      image: node:12.16.3
+      name: "Build and package"
+      script:
+        # Test get an oauth access token using the client credentials, parsing out the token with jq.
+        - apt-get update && apt-get install -y curl jq zip
+        - >
+          export BB_TOKEN=$(curl -s -X POST -u "${CLIENT_ID}:${CLIENT_SECRET}" \
+            https://bitbucket.org/site/oauth2/access_token \
+            -d grant_type=client_credentials -d scopes="repository"| jq --raw-output '.access_token')
+        # Configure git to use the oauth token. This well happen when setting env variable BB_TOKEN
+        - npm install
+  #            - npm test
+        - npx semantic-release -b master
+        - export VERSION=$(jq -r '.version' package.json)
+        - echo $VERSION
+        - zip -r codemonk-api.zip .
+        - ls -ltr *.zip
+      artifacts:
+        - node_modules/**
+        - coverage/**
+        - package.json
+      services:
+        - mongo
+  - step: &deploy
+      image: atlassian/pipelines-awscli
+      name: "dev ec2 deploy"
+      script:
+        - aws configure set default.region $AWS_REGION
+        - aws configure set profile.default.aws_access_key_id $AWS_ACCESS_KEY_ID
+        - aws configure set profile.default.aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        - aws deploy push --application-name $APPLICATION_NAME --s3-location s3://$BUCKET_NAME/codemonk-api.tar --ignore-hidden-files --source . --region $AWS_REGION
+        - aws deploy create-deployment --application-name $APPLICATION_NAME --s3-location bucket=$BUCKET_NAME,key=codemonk-api.tar,bundleType=zip --deployment-group-name $DEPLOYMENT_GROUP --region $AWS_REGION
+
+  - step: &build-and-package-stage
+      image: node:12.16.3
+      name: "Build and package"
+      script:
+        # Test get an oauth access token using the client credentials, parsing out the token with jq.
+        - apt-get update && apt-get install -y curl jq zip
+        - >
+          export BB_TOKEN=$(curl -s -X POST -u "${CLIENT_ID}:${CLIENT_SECRET}" \
+            https://bitbucket.org/site/oauth2/access_token \
+            -d grant_type=client_credentials -d scopes="repository"| jq --raw-output '.access_token')
+        # Configure git to use the oauth token. This well happen when setting env variable BB_TOKEN
+        - npm install
+  #            - npm test
+        - npx semantic-release -b master
+        - export VERSION=$(jq -r '.version' package.json)
+        - echo $VERSION
+        - zip -r stage-codemonk-api.zip .
+        - ls -ltr *.zip
+      artifacts:
+        - node_modules/**
+        - coverage/**
+        - package.json
+      services:
+        - mongo
+  - step: &deploy-stage
+      image: atlassian/pipelines-awscli
+      name: "stage ec2 deploy"
+      script:
+        - aws configure set default.region $AWS_REGION
+        - aws configure set profile.default.aws_access_key_id $AWS_ACCESS_KEY_ID
+        - aws configure set profile.default.aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        - aws deploy push --application-name $STAGE_APPLICATION_NAME --s3-location s3://$STAGE_BUCKET_NAME/stage-codemonk-api.tar --ignore-hidden-files --source . --region $AWS_REGION
+        - aws deploy create-deployment --application-name $STAGE_APPLICATION_NAME --s3-location bucket=$STAGE_BUCKET_NAME,key=stage-codemonk-api.tar,bundleType=zip --deployment-group-name $STAGE_DEPLOYMENT_GROUP --region $AWS_REGION
+
+
+
+
+
+  - step: &build-and-package-prod
+      image: node:12.16.3
+      name: "Build and package"
+      script:
+        # Test get an oauth access token using the client credentials, parsing out the token with jq.
+        - apt-get update && apt-get install -y curl jq zip
+        - >
+          export BB_TOKEN=$(curl -s -X POST -u "${CLIENT_ID}:${CLIENT_SECRET}" \
+            https://bitbucket.org/site/oauth2/access_token \
+            -d grant_type=client_credentials -d scopes="repository"| jq --raw-output '.access_token')
+        # Configure git to use the oauth token. This well happen when setting env variable BB_TOKEN
+        - npm install
+#            - npm test
+        - npx semantic-release -b master
+        - export VERSION=$(jq -r '.version' package.json)
+        - echo $VERSION
+        - zip -r prod-codemonk-api.zip .
+        - ls -ltr *.zip
+      artifacts:
+        - node_modules/**
+#            - coverage/**
+        - package.json
+
+      services:
+        - mongo
+
+  - step: &deploy-prod
+      image: atlassian/pipelines-awscli
+      name: "Prod ec2 deploy"
+      script:
+        - aws configure set default.region $AWS_REGION
+        - aws configure set profile.default.aws_access_key_id $PROD_AWS_ACCESS_KEY_ID
+        - aws configure set profile.default.aws_secret_access_key $PROD_AWS_SECRET_ACCESS_KEY
+        - aws deploy push --application-name $PROD_APPLICATION_NAME --s3-location s3://$PROD_BUCKET_NAME/prod-codemonk-api.tar  --ignore-hidden-files --source . --region $AWS_REGION
+        - aws deploy create-deployment --application-name $PROD_APPLICATION_NAME --s3-location bucket=$PROD_BUCKET_NAME,key=prod-codemonk-api.tar,bundleType=zip --deployment-group-name $PROD_DEPLOYMENT_GROUP --region $AWS_REGION
+
+
+
+
+pipelines:
+  branches:
+    master:
+       - step:
+          image: node:12.16.3
+          name: "Build and package"
+          script:
+            # Test get an oauth access token using the client credentials, parsing out the token with jq.
+            - apt-get update && apt-get install -y curl jq zip
+            - >
+              export BB_TOKEN=$(curl -s -X POST -u "${CLIENT_ID}:${CLIENT_SECRET}" \
+                https://bitbucket.org/site/oauth2/access_token \
+                -d grant_type=client_credentials -d scopes="repository"| jq --raw-output '.access_token')
+            # Configure git to use the oauth token. This well happen when setting env variable BB_TOKEN
+            - npm install
+#            - npm test
+            - npx semantic-release -b master
+            - export VERSION=$(jq -r '.version' package.json)
+            - echo $VERSION
+            - zip -r codemonk-api.zip .
+            - ls -ltr *.zip
+          artifacts:
+            - node_modules/**
+            - coverage/**
+            - package.json
+          services:
+            - mongo
+#       - step:
+#          name: Running sonar scanner
+#          image: atlassian/default-image:2
+#          script:
+#            - curl ifconfig.co
+#            - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
+#            - unzip sonar-scanner-cli-3.2.0.1227-linux.zip
+        #    - cat sonar-scanner.properties
+        #    - ls -ltr
+        #    - cp sonar-scanner.properties sonar-scanner-3.2.0.1227-linux/conf/sonar-scanner.properties
+#            - ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.host.url=$SONAR_HOST -Dsonar.projectVersion=$BITBUCKET_BRANCH -Dsonar.login=$SONAR_TOKEN -Dsonar.projectName=$PROJECT_NAME -Dsonar.projectKey=$PROJECT_KEY -Dsonar.sources=./ -Dsonar.language=js -Dsonar.exclusions=**migrate-mongo-config.js,**/node_modules/**,**/coverage/**,**/test/**,**/jsdocs/**,**/etc/**,**/migrations/**,**Swagger.js,server/util/country.js,server/util/currency.js,server/util/timeZone.js,server/util/languageISO.js,util/http-status.js,server/services/clientProfile/clientProfileService.js -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+       - step:
+          deployment: development
+          image: atlassian/pipelines-awscli
+          name: "dev ec2 deploy"
+          script:
+            - aws configure set default.region $AWS_REGION
+            - aws configure set profile.default.aws_access_key_id $AWS_ACCESS_KEY_ID
+            - aws configure set profile.default.aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            - aws deploy push --application-name $APPLICATION_NAME --s3-location s3://$BUCKET_NAME/codemonk-api.tar --ignore-hidden-files --source . --region $AWS_REGION
+            - aws deploy create-deployment --application-name $APPLICATION_NAME --s3-location bucket=$BUCKET_NAME,key=codemonk-api.tar,bundleType=zip --deployment-group-name $DEPLOYMENT_GROUP --region $AWS_REGION
+
+
+    production:
+       - step:
+          image: node:12.16.3
+          name: "Build and package"
+          script:
+            # Test get an oauth access token using the client credentials, parsing out the token with jq.
+            - apt-get update && apt-get install -y curl jq zip
+            - >
+              export BB_TOKEN=$(curl -s -X POST -u "${CLIENT_ID}:${CLIENT_SECRET}" \
+                https://bitbucket.org/site/oauth2/access_token \
+                -d grant_type=client_credentials -d scopes="repository"| jq --raw-output '.access_token')
+            # Configure git to use the oauth token. This well happen when setting env variable BB_TOKEN
+            - npm install
+#            - npm test
+            - npx semantic-release -b master
+            - export VERSION=$(jq -r '.version' package.json)
+            - echo $VERSION
+            - zip -r prod-codemonk-api.zip .
+            - ls -ltr *.zip
+          artifacts:
+            - node_modules/**
+#            - coverage/**
+            - package.json
+
+          services:
+            - mongo
+
+       - step:
+          deployment: production
+          image: atlassian/pipelines-awscli
+          name: "Prod ec2 deploy"
+          script:
+            - aws configure set default.region $AWS_REGION
+            - aws configure set profile.default.aws_access_key_id $PROD_AWS_ACCESS_KEY_ID
+            - aws configure set profile.default.aws_secret_access_key $PROD_AWS_SECRET_ACCESS_KEY
+            - aws deploy push --application-name $PROD_APPLICATION_NAME --s3-location s3://$PROD_BUCKET_NAME/prod-codemonk-api.tar  --ignore-hidden-files --source . --region $AWS_REGION
+            - aws deploy create-deployment --application-name $PROD_APPLICATION_NAME --s3-location bucket=$PROD_BUCKET_NAME,key=prod-codemonk-api.tar,bundleType=zip --deployment-group-name $PROD_DEPLOYMENT_GROUP --region $AWS_REGION
+
+    staging:
+       - step:
+          image: node:12.16.3
+          name: "Build and package"
+          script:
+            # Test get an oauth access token using the client credentials, parsing out the token with jq.
+            - apt-get update && apt-get install -y curl jq zip
+            - >
+              export BB_TOKEN=$(curl -s -X POST -u "${CLIENT_ID}:${CLIENT_SECRET}" \
+                https://bitbucket.org/site/oauth2/access_token \
+                -d grant_type=client_credentials -d scopes="repository"| jq --raw-output '.access_token')
+            # Configure git to use the oauth token. This well happen when setting env variable BB_TOKEN
+            - npm install
+#            - npm test
+            - npx semantic-release -b master
+            - export VERSION=$(jq -r '.version' package.json)
+            - echo $VERSION
+            - zip -r stage-codemonk-api.zip .
+            - ls -ltr *.zip
+          artifacts:
+            - node_modules/**
+#            - coverage/**
+            - package.json
+
+          services:
+            - mongo
+
+       - step:
+          deployment: staging
+          image: atlassian/pipelines-awscli
+          name: "stage ec2 deploy"
+          script:
+            - aws configure set default.region $AWS_REGION
+            - aws configure set profile.default.aws_access_key_id $AWS_ACCESS_KEY_ID
+            - aws configure set profile.default.aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            - aws deploy push --application-name $STAGE_APPLICATION_NAME --s3-location s3://$STAGE_BUCKET_NAME/stage-codemonk-api.tar  --ignore-hidden-files --source . --region $AWS_REGION
+            - aws deploy create-deployment --application-name $STAGE_APPLICATION_NAME --s3-location bucket=$STAGE_BUCKET_NAME,key=stage-codemonk-api.tar,bundleType=zip --deployment-group-name $STAGE_DEPLOYMENT_GROUP --region $AWS_REGION
+
+
+
+    release/*:
+       - step:
+          <<: *build-and-package-stage
+          name: Build and package
+       - step:
+          <<: *deploy-stage
+          name: "stage ec2 deploy"
+          deployment: staging
+    
+    hotfix/*:
+       - step: *initialize-pipeline
+       - step:
+          <<: *build-and-package-stage
+          name: Build and package
+          trigger: manual
+       - step:
+          <<: *deploy-stage
+          name: "stage ec2 deploy"
+          deployment: staging
+
+
+    feature/*:
+       - step: *initialize-pipeline
+       - step: 
+          <<: *build-and-package
+          name: Build and package
+          trigger: manual
+       - step: 
+          <<: *deploy
+          name: "dev ec2 deploy"
+          deployment: development
+
+    bugfix/*:
+       - step: *initialize-pipeline
+       - step: 
+          <<: *build-and-package
+          name: Build and package
+          trigger: manual
+       - step: 
+          <<: *deploy
+          name: "dev ec2 deploy"
+          deployment: development
+
+    
+      
+

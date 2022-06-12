@@ -1,0 +1,243 @@
+const message = require('../../locales/en');
+
+module.exports = swaggerJson => {
+    swaggerJson.paths['/talent/project/list'] = {
+        get: {
+            security: [{
+                bearerAuth: []
+            }],
+            tags: [
+                'Talent'
+            ],
+            parameters: [{
+                in: 'query',
+                name: 'status',
+                description: `filter option for project status
+                // -1 = All, 0 = Requested, 1 = Proposed, 2 = Discovery, 3 = Kick-off,
+                // 4 = In Progress, 5 = On Hold, 6 = Suspended, 7 = Closed`
+            },
+            {
+                in: 'query',
+                name: 'limit',
+                description: 'limit for result set'
+            },
+            {
+                in: 'query',
+                name: 'page',
+                description: 'page of result set'
+            },
+            {
+                in: 'query',
+                name: 'sort',
+                type: 'string',
+                enum: [
+                    '{ "talents._id":  1 }',
+                    '{ "talents._id": -1 }',
+                    '{ "name": 1 }',
+                    '{ "name": -1 }'],
+                description: 'Sort in project'
+            }],
+            description: 'talent project list',
+            summary: 'talent project list',
+            responses: {
+                200: {
+                    description: 'talent project list',
+                    schema: {
+                        $ref: '#/definitions/talentProjectListsuccess'
+                    }
+                },
+                400: {
+                    description: 'Invalid request',
+                    schema: {
+                        $ref: '#/definitions/validationError'
+                    }
+                },
+                401: {
+                    description: 'Unauthorized Access',
+                    schema: {
+                        $ref: '#/definitions/unauthorisedAccess'
+                    }
+                },
+                500: {
+                    description: 'Something went wrong. Try again.',
+                    schema: {
+                        $ref: '#/definitions/unexpextedError'
+                    }
+                }
+            }
+        }
+    };
+
+    swaggerJson.paths['/talent/project/search'] = {
+        get: {
+            security: [{
+                bearerAuth: []
+            }],
+            tags: [
+                'Talent'
+            ],
+            parameters: [{
+                in: 'query',
+                name: 'q',
+                description: 'query for name search of client'
+            },
+            {
+                in: 'query',
+                name: 'talentId',
+                description: 'Agency can search project by talentId'
+            }],
+            description: 'talent project name list',
+            summary: 'talent project name list',
+            responses: {
+                200: {
+                    description: 'talent project name list',
+                    schema: {
+                        $ref: '#/definitions/talentProjectListsuccess'
+                    }
+                },
+                400: {
+                    description: 'Invalid request',
+                    schema: {
+                        $ref: '#/definitions/validationError'
+                    }
+                },
+                401: {
+                    description: 'Unauthorized Access',
+                    schema: {
+                        $ref: '#/definitions/unauthorisedAccess'
+                    }
+                },
+                500: {
+                    description: 'Something went wrong. Try again.',
+                    schema: {
+                        $ref: '#/definitions/unexpextedError'
+                    }
+                }
+            }
+        }
+    };
+
+    swaggerJson.definitions.unexpextedError = {
+        'properties': {
+            'status': {
+                'type': 'number',
+                'example': 0
+            },
+            'message': {
+                'example': message.ERROR_MSG
+            }
+        }
+    };
+
+    swaggerJson.definitions.validationError = {
+        properties: {
+            status: {
+                type: 'number',
+                example: 0
+            },
+            message: {
+                example: message.INVALID_REQUEST
+            }
+        }
+    };
+
+    swaggerJson.definitions.unauthorisedAccess = {
+        properties: {
+            status: {
+                type: 'number',
+                example: 0
+            },
+            message: {
+                example: message.ACCESS_DENIED
+            }
+        }
+    };
+
+    swaggerJson.definitions.talentProjectListsuccess = {
+        properties: {
+            status: {
+                type: 'number',
+                example: 1
+            },
+            data: {
+                type: 'object',
+                example: {
+                    docs: [{
+                        _id: '5f2abf4364712b10ad0e8e3c',
+                        name: 'CodeMonk',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f2ac7797a0f5e1ad5e94381',
+                        name: 'CodeMonk',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f2ac7bbd929631bba774adc',
+                        name: 'CodeMonk',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f3a30217cccde1fcfd48fbe',
+                        name: 'codemonk',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f4512eb9596e5710ed1b899',
+                        name: 'Test',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f4513009596e5710ed1b89a',
+                        name: 'Test',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f45131245a1c073cb29e0c2',
+                        name: 'Test',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f451333db003973fe961ef9',
+                        name: 'Test',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f4513638fa36174304c78d0',
+                        name: 'Test',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    },
+                    {
+                        _id: '5f45137a09767674551b1705',
+                        name: 'Test',
+                        clientName: 'Client\'sFirst Client\'s Last',
+                        status: 'Requested'
+                    }],
+                    totalDocs: 80,
+                    limit: 10,
+                    page: 1,
+                    totalPages: 8,
+                    pagingCounter: 1,
+                    hasPrevPage: false,
+                    hasNextPage: true,
+                    prevPage: null,
+                    nextPage: 2
+                }
+            },
+            message: {
+                example: message.SUCCESS
+            }
+        }
+    };
+
+    return swaggerJson;
+};

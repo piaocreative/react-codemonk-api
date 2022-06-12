@@ -1,0 +1,16 @@
+{
+    "apps": {
+        "name": "node-dev-api",
+        "script": "index.js",
+        "instances": "max",
+        "watch": false,
+        "log_date_format": "DD-MM HH:mm:ss.SSS",
+        "log_file": ".pm2/logs/combined.outerr.log",
+        "error_file": ".pm2/logs/err.log",
+        "out_file": ".pm2/logs/out.log",
+        "exec_mode": "cluster",
+        "env": {
+            "NODE_ENV": "development"
+        }
+    }
+}

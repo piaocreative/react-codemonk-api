@@ -1,0 +1,122 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <title>CodeMonk</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            font-family: 'Open Sans, Segoe, Segoe UI, DejaVu Sans, Trebuchet MS, Verdana, sans-serif';
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+
+        .logo {
+            height: auto;
+            display: block;
+            /* margin-left: auto; */
+            margin-right: auto;
+            width: 50%;
+            padding: 10px 0 10px 0;
+        }
+
+        #pagecontent {
+            padding: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 20px;
+        }
+
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 20px;
+        }
+
+        p {
+            font-size: 10px;
+            line-height: 16px;
+            margin: 0 0 10px;
+            font-weight: 400;
+            color: rgba(42, 37, 54, 0.7);
+        }
+
+        p.title {
+            font-size: 12px;
+            line-height: 18px;
+            font-weight: 600;
+            margin: 0 0 3px;
+            color: rgb(42, 37, 54);
+        }
+
+        ul {
+            list-style: square;
+            color: #4C00FF;
+            font-size: 14px;
+            padding-left: 16px;
+        }
+
+        li {
+            border-bottom: 1px solid rgb(243, 241, 249);
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+
+        li p {
+            margin: 0;
+        }
+
+        li p.title {
+            margin: 0 0 2px;
+        }
+
+        #pageFooter {
+            font-size: 12px;
+            text-align: center;
+            padding: 10px 0 10px;
+            background-color: #eeeeee;
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="container-fluid">
+    <div class="page">
+        <div id="pagecontent">
+            <h3>Quote for {{name}}</h3>
+            <div class="section">
+                <p class="title">Total Cost:</p>
+                <p>{{totalCost}}</p>
+            </div>
+            <div class="section">
+                <p class="title">Assumptions:</p>
+                <p>{{assumptions}}</p>
+            </div>
+            <div class="section">
+                <p class="title">Out Of Scope:</p>
+                <p>{{outOfScope}}</p>
+            </div>
+            <div class="section">
+                <p class="title">Team Structure:</p>
+                <p>{{teamStructure}}</p>
+            </div>
+            <div class="section">
+                <p class="title">Additional Info:</p>
+                <p>{{otherInfo}}</p>
+            </div>
+        </div>
+        <div id="pageFooter">(C) Copyrights {{year}} CodeMonk. All rights reserved. </div>
+    </div>
+</body>
+
+</html>

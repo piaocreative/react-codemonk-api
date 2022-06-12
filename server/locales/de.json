@@ -1,0 +1,7 @@
+{
+	"HELLO": "Hallo Deutscher",
+	"FIELD_LENGTH": "Bitte geben Sie {{FIELD}} zwischen {{MIN}} und {{MAX}} Zeichen ein.",
+	"FIELD_SELECT_REQUIRED": "Wählen Sie mindestens ein %s aus.",
+	"FIELD_NOT_VALID": "%s ist ungültig.",
+	"FIELD_REQUIRD": "%s ist erforderlich."
+}
